@@ -1,4 +1,5 @@
 {
-  "buildCommand": "echo 'Frontend only'",
-  "outputDirectory": "public"
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "framework": "static"
 }
