@@ -1,0 +1,14 @@
+{
+  "name": "birthday.html",
+  "version": "2.0.0",
+  "description": "Frontend-only romantic birthday website - optimized for Vercel deployment",
+  "type": "commonjs",
+  "scripts": {
+    "start": "echo 'Frontend-only - no server needed'",
+    "dev": "echo 'Frontend-only - no server needed'",
+    "test": "echo 'Frontend-only - no tests'"
+  },
+  "keywords": ["birthday", "romantic", "frontend"],
+  "author": "Love",
+  "license": "ISC"
+}

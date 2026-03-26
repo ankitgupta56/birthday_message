@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="true">
+    <meta name="apple-mobile-web-app-capable" content="true">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ffeef8">
+    <title>🔐 Enter Password - Happy Birthday My Love ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Initialize LocalStorage -->
+    <script src="/localStorage-init.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-top));
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #ff4458, #ff6b7a);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-30px) translateX(20px);
+                opacity: 0.6;
+            }
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 68, 88, 0.2);
+            padding: 60px 40px;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+            position: relative;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-icon {
+            text-align: center;
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .login-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: #ff4458;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ff4458;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #ffe0e9;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fff9fb;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ff4458;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 68, 88, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff4458, #ff6b7a);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 8px 20px rgba(255, 68, 88, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 68, 88, 0.4);
+            background: linear-gradient(135deg, #ff6b7a, #ff8899);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            display: none;
+            background: #ffe0e0;
+            color: #ff4458;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border-left: 4px solid #ff4458;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .success-message {
+            display: none;
+            background: #e0ffe0;
+            color: #00a000;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border-left: 4px solid #00a000;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #ff4458;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 68, 88, 0.1);
+            border-top: 3px solid #ff4458;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hearts {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 30px;
+            opacity: 0.5;
+            animation: heartbeat 1s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .hint {
+            text-align: center;
+            color: #ccc;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 45px 25px;
+                border-radius: 20px;
+                max-width: 95%;
+            }
+
+            .login-icon {
+                font-size: 60px;
+                margin-bottom: 15px;
+            }
+
+            .login-title {
+                font-size: clamp(1.5rem, 5vw, 2rem);
+            }
+
+            .login-subtitle {
+                font-size: clamp(0.75rem, 2vw, 0.875rem);
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+
+            input[type="password"] {
+                padding: 12px 14px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+
+            .submit-btn {
+                padding: 12px;
+                font-size: 15px;
+                border-radius: 10px;
+            }
+
+            .error-message,
+            .success-message {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+
+            .hearts {
+                font-size: 18px;
+                margin-top: 20px;
+            }
+
+            .hint {
+                font-size: 11px;
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                min-height: 100dvh;
+            }
+
+            .login-container {
+                padding: 35px 18px;
+                border-radius: 15px;
+                width: 95%;
+                min-height: fit-content;
+            }
+
+            .login-icon {
+                font-size: 50px;
+                margin-bottom: 12px;
+            }
+
+            .login-title {
+                font-size: clamp(1.3rem, 4vw, 1.6rem);
+                margin-bottom: 8px;
+            }
+
+            .login-subtitle {
+                font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+                margin-bottom: 18px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            input[type="password"] {
+                padding: 11px 12px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+
+            .submit-btn {
+                padding: 11px;
+                font-size: 14px;
+                border-radius: 8px;
+                min-height: 44px;
+            }
+
+            .error-message,
+            .success-message {
+                padding: 9px 12px;
+                font-size: 12px;
+                margin-bottom: 15px;
+                border-radius: 6px;
+            }
+
+            .hearts {
+                font-size: 16px;
+                margin-top: 15px;
+            }
+
+            .hint {
+                font-size: 10px;
+                margin-top: 12px;
+            }
+        }
+
+        /* ===== LANDSCAPE MODE ===== */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .login-container {
+                padding: 25px 20px;
+                max-width: 90%;
+            }
+
+            .login-icon {
+                font-size: 45px;
+                margin-bottom: 8px;
+            }
+
+            .login-title {
+                font-size: 1.3rem;
+                margin-bottom: 5px;
+            }
+
+            .login-subtitle {
+                font-size: 0.75rem;
+                margin-bottom: 12px;
+            }
+
+            .form-group {
+                margin-bottom: 12px;
+            }
+
+            input[type="password"] {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+
+            .submit-btn {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .hearts {
+                margin-top: 10px;
+                font-size: 14px;
+            }
+
+            .hint {
+                margin-top: 8px;
+                font-size: 10px;
+            }
+        }
+
+        /* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+        @media (hover: none) and (pointer: coarse) {
+            .submit-btn:active {
+                transform: scale(0.98);
+            }
+
+            input[type="password"]:focus {
+                outline: none;
+                border-color: #ff4458;
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="login-container">
+        <div class="login-icon">🔐</div>
+        <h1 class="login-title">Secret Access Only</h1>
+        <p class="login-subtitle">❤️ This special website is password protected ❤️</p>
+
+        <form id="loginForm">
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <div class="form-group">
+                <label for="password">Enter Password:</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="••••••••" 
+                    required
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px;">Checking password...</p>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Unlock 🎁</button>
+
+            <div class="hearts">💕 💕 💕</div>
+        </form>
+
+        <div class="hint">Hint: Try a date special to you or a meaningful word</div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const loading = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Handle form submission (CLIENT-SIDE PASSWORD CHECK)
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            loading.style.display = 'block';
+            submitBtn.disabled = true;
+
+            const password = passwordInput.value;
+            const correctPassword = '18th of May 2022'; // Change this to your desired password
+
+            // Simulate network delay for better UX
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            if (password === correctPassword) {
+                successMessage.textContent = '✅ Password correct! Welcome! 🎉';
+                successMessage.style.display = 'block';
+                loading.style.display = 'none';
+                // Save authentication to localStorage
+                localStorage.setItem('authenticated', JSON.stringify(true));
+                
+                // Redirect to main page after 1 second
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1000);
+            } else {
+                errorMessage.textContent = '❌ Incorrect password';
+                errorMessage.style.display = 'block';
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+
+        // Focus on password input on load
+        passwordInput.focus();
+
+        // Allow Enter key to submit
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
